@@ -10,51 +10,82 @@
  */
 
 
-namespace App{
+namespace App\Models\Auth{
 /**
- * App\Dog
+ * Class Role.
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $guard_name
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $action_buttons
+ * @property-read string $delete_button
+ * @property-read string $edit_button
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Auth\User[] $users
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\Spatie\Permission\Models\Role permission($permissions)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereGuardName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	class Role extends \Eloquent {}
+}
+
+namespace App\Models\Auth{
+/**
+ * Class SocialAccount.
  *
  * @property int $id
  * @property int $user_id
- * @property string $name
- * @property int $sireid
- * @property int $damid
- * @property string $sex
- * @property string $dob
- * @property string $pretitle
- * @property string $posttitle
- * @property string $reg
- * @property string $color
- * @property string $markings
- * @property int $fss
- * @property int $rat
+ * @property string $provider
+ * @property string $provider_id
+ * @property string|null $token
+ * @property string|null $avatar
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Dog $dam
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Dog[] $offspring
- * @property-read \App\Dog $sire
- * @property-read \App\Models\Auth\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereColor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereDamid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereDob($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereFss($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereMarkings($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog wherePosttitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog wherePretitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereRat($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereReg($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereSex($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereSireid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereAvatar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereProvider($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereProviderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereUserId($value)
+ * @mixin \Eloquent
  */
-	class Dog extends \Eloquent {}
+	class SocialAccount extends \Eloquent {}
+}
+
+namespace App\Models\Auth{
+/**
+ * Class PasswordHistory.
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string $password
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory whereUserId($value)
+ * @mixin \Eloquent
+ */
+	class PasswordHistory extends \Eloquent {}
 }
 
 namespace App\Models\Auth{
@@ -142,84 +173,6 @@ namespace App\Models\Auth{
 	class User extends \Eloquent {}
 }
 
-namespace App\Models\Auth{
-/**
- * Class Role.
- *
- * @property int $id
- * @property string $name
- * @property string $guard_name
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read string $action_buttons
- * @property-read string $delete_button
- * @property-read string $edit_button
- * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Permission\Models\Permission[] $permissions
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Auth\User[] $users
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\Spatie\Permission\Models\Role permission($permissions)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereGuardName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\Role whereUpdatedAt($value)
- * @mixin \Eloquent
- */
-	class Role extends \Eloquent {}
-}
-
-namespace App\Models\Auth{
-/**
- * Class PasswordHistory.
- *
- * @property int $id
- * @property int $user_id
- * @property string $password
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\PasswordHistory whereUserId($value)
- * @mixin \Eloquent
- */
-	class PasswordHistory extends \Eloquent {}
-}
-
-namespace App\Models\Auth{
-/**
- * Class SocialAccount.
- *
- * @property int $id
- * @property int $user_id
- * @property string $provider
- * @property string $provider_id
- * @property string|null $token
- * @property string|null $avatar
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount query()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereAvatar($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereProvider($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereProviderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\SocialAccount whereUserId($value)
- * @mixin \Eloquent
- */
-	class SocialAccount extends \Eloquent {}
-}
-
 namespace App\Models\System{
 /**
  * Class Session
@@ -243,6 +196,53 @@ namespace App\Models\System{
  * @mixin \Eloquent
  */
 	class Session extends \Eloquent {}
+}
+
+namespace App{
+/**
+ * App\Dog
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string $name
+ * @property int $sireid
+ * @property int $damid
+ * @property string $sex
+ * @property string $dob
+ * @property string $pretitle
+ * @property string $posttitle
+ * @property string $reg
+ * @property string $color
+ * @property string $markings
+ * @property int $fss
+ * @property int $rat
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Dog $dam
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Dog[] $offspring
+ * @property-read \App\Dog $sire
+ * @property-read \App\Models\Auth\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereDamid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereDob($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereFss($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereMarkings($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog wherePosttitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog wherePretitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereRat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereReg($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereSex($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereSireid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereUserId($value)
+ */
+	class Dog extends \Eloquent {}
 }
 
 namespace App{
