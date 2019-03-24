@@ -48,4 +48,6 @@
             }
         });
     </script>
+
+    <img src="" alt="" style="text-align: center;">
 @endpush

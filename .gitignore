@@ -1,6 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
+/public/phpmyadmin
 public/images
 /storage/*.key
 /vendor
@@ -28,3 +29,4 @@ output.txt
 coverage.xml
 /coverage
 .phpunit.result.cache
+
