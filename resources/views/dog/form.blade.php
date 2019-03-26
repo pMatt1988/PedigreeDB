@@ -38,7 +38,7 @@
         <div class="col-8">
             <input id="dob" name="dob" type="text" class="form-control" aria-describedby="dobHelpBlock"
                    value="{{ old('dob') }}">
-            <span id="dobHelpBlock" class="form-text text-muted">Format MM/DD/YYYY</span>
+            <span id="dobHelpBlock" class="form-text text-muted">Format YYYY-DD-MM (2005-27-05)</span>
         </div>
     </div>
     <div class="form-group row">

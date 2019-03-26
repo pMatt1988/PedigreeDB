@@ -1,3 +1,4 @@
+
 @extends('frontend.layouts.app')
 
 @section('title', app_name() . ' | ' . __('navs.general.home'))
@@ -16,14 +17,12 @@
                 <div class="card-body">
                     <p>Welcome to Pedigree DB!</p>
 
-                    <form>
+
+                    <form autocomplete="off">
                         <div class="row">
-                            <div class="col-4">
+                            <div class="col-8 offset-2">
                                 <input type="text" name="search" id="search"
-                                       class="form-control">
-                            </div>
-                            <div class="col-2">
-                                <button type="submit" class="form-control">Search</button>
+                                       class="form-control" >
                             </div>
                         </div>
 
@@ -37,16 +36,36 @@
 @push('after-scripts')
     {{ script("js/typeahead.js" )}}
     <script type="text/javascript">
-        var path = "{{ url('autocomplete') }}";
+        let path = "{{ url('autocomplete') }}";
         $('#search').typeahead({
             minLength: 3,
             highlight: true,
-            source: function (query, process) {
-                return $.get(path, {query: query}, function(data) {
-                    return process(data);
+            source:
+            function (query, process) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: path,
+                    type: 'POST',
+                    data: { query: query },
+                    dataType: 'json',
+                    async: true,
+                    success: function(data) {
+                        return process(data);
+                    }
+
                 });
-            }
+                // return $.post(path, {query: query}, function(data) {
+                //     return process(data);
+                // });
+            },
+            autoSelect: true,
+            items: 8,
+            appendTo
         });
+
+
     </script>
 
     <img src="" alt="" style="text-align: center;">

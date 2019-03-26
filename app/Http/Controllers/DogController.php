@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Dog;
+use Auth;
 use Illuminate\Http\Request;
 
 class DogController extends Controller
@@ -14,7 +15,8 @@ class DogController extends Controller
      */
     public function index()
     {
-        return view('dog.index');
+        $dogs = Dog::all();
+        return view('dog.index', compact('dogs'));
     }
 
     /**
@@ -37,24 +39,22 @@ class DogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
         $validated = $request->validate([
            'name' => 'required',
             'sireid' =>  ['nullable', 'integer'],
             'damid' => ['nullable', 'integer'],
             'sex' => ['required', 'in:male,female'],
-            'dob' => ['nullable', 'date_format:mm "/" dd "/" yy'],
+            'dob' => ['nullable', 'date_format:Y-m-d'],
             'pretitle' => ['nullable','max:32'],
             'posttitle' => ['nullable', 'max:32'],
             'reg' => ['nullable', 'max:64'],
             'color' => ['nullable', 'max:64'],
             'markings' => ['nullable', 'max:64'],
-            'fss' => 'boolean',
-            'rat' => 'boolean',
         ]);
-
+        $validated['user_id'] = Auth::id();
         Dog::create($validated);
-        return view('dog.create');
+        return redirect('dogs');
     }
 
     /**
@@ -68,7 +68,7 @@ class DogController extends Controller
         //
 
 
-        return view('dog.show');
+        return view('dog.show', compact('dog'));
     }
 
     /**
@@ -81,7 +81,7 @@ class DogController extends Controller
     {
         //
 
-        return view('dog.edit');
+        return view('dog.edit', compact('dog'));
     }
 
     /**

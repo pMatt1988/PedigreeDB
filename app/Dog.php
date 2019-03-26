@@ -59,6 +59,7 @@ class Dog extends Model
 
 
     protected $fillable = [
+        'user_id',
         'name',
         'sireid',
         'damid',
@@ -69,12 +70,9 @@ class Dog extends Model
         'reg',
         'color',
         'markings',
-        'fss',
-        'rat',
     ];
 
     public function user() {
-        //return $user = Dog::hasOne('App\User', 'id', 'user');
 
         return $user = $this->belongsTo('App\Models\Auth\User');
     }
