@@ -40,7 +40,6 @@
                             ->for('permissions') }}
 
                         <div class="col-md-10">
-                            {{ dd($permissions) }}
                             @if($permissions->count())
                                 @foreach($permissions as $permission)
                                     <div class="checkbox d-flex align-items-center">

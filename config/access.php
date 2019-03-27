@@ -12,6 +12,17 @@ return [
         'registration' => env('REGISTRATION_CAPTCHA_STATUS', false),
     ],
 
+    'dog' => [
+        /*
+         * Whether the captcha is on or off for dog creation.
+         */
+        'captcha' => [
+            'create' => env('DOG_CREATE_CAPTCHA_STATUS', false),
+            'edit' => env('DOG_EDIT_CAPTCHA_STATUS', false),
+
+            ]
+    ],
+
     /*
      * Whether or not registration is enabled
      */

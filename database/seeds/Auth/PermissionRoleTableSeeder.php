@@ -26,7 +26,7 @@ class PermissionRoleTableSeeder extends Seeder
         $user = Role::create(['name' => config('access.users.default_role')]);
 
         // Create Permissions
-        $permissions = ['view backend'];
+        $permissions = ['view backend', 'edit dogs', 'create dogs', 'delete dogs', 'view dogs'];
 
         foreach ($permissions as $permission) {
             Permission::create(['name' => $permission]);
@@ -36,7 +36,9 @@ class PermissionRoleTableSeeder extends Seeder
         $admin->givePermissionTo(Permission::all());
 
         // Assign Permissions to other Roles
-        $executive->givePermissionTo('view backend');
+        $executive->givePermissionTo(['view backend', 'edit dogs', 'view dogs', 'create dogs']);
+        $user->givePermissionTo(['view dogs', 'create dogs']);
+
 
         $this->enableForeignKeys();
     }
