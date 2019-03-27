@@ -18,12 +18,4 @@ class HomeController extends Controller
 
         return view('frontend.index');
     }
-
-    public function addDog() {
-        return view('frontend.AddDog');
-    }
-
-    public function submitDog() {
-
-    }
 }

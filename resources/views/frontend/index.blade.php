@@ -1,10 +1,9 @@
-
 @extends('frontend.layouts.app')
 
 @section('title', app_name() . ' | ' . __('navs.general.home'))
 
 @push('after-styles')
-    {{ style('css/typeaheadjs.css') }}
+    {{--{{ style('css/typeaheadjs.css') }}--}}
 @endpush
 
 @section('content')
@@ -22,11 +21,14 @@
                         <div class="row">
                             <div class="col-8 offset-2">
                                 <input type="text" name="search" id="search"
-                                       class="form-control" >
+                                       class="form-control" placeholder="Start typing to search.">
                             </div>
                         </div>
 
                     </form>
+
+                    <div id="search-contents"></div>
+
                 </div>
             </div><!--card-->
         </div><!--col-->
@@ -34,35 +36,32 @@
 @endsection
 
 @push('after-scripts')
-    {{ script("js/typeahead.js" )}}
+    {{ script("js/typeahead.bundle.js" )}}
     <script type="text/javascript">
         let path = "{{ url('autocomplete') }}";
+        //let contents = $('#search-contents').toElement;
+
         $('#search').typeahead({
             minLength: 3,
-            highlight: true,
             source:
-            function (query, process) {
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    url: path,
-                    type: 'POST',
-                    data: { query: query },
-                    dataType: 'json',
-                    async: true,
-                    success: function(data) {
-                        return process(data);
-                    }
+                function (query) {
+                console.log('test');
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: path,
+                        type: 'POST',
+                        data: {query: query},
+                        dataType: 'json',
+                        async: true,
+                        success: function (data) {
+                            console.log('test');
+                            return data;
+                        }
 
-                });
-                // return $.post(path, {query: query}, function(data) {
-                //     return process(data);
-                // });
-            },
-            autoSelect: true,
-            items: 8,
-            appendTo
+                    });
+                },
         });
 
 

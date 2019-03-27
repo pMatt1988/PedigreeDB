@@ -1,5 +1,5 @@
-<form action='/dogs' method="POST">
-    @csrf
+{{--<form action='/dogs' method="POST">--}}
+{{ html()->form('POST', '/dogs')->class('form-horizontal')->open() }}
     <div class="form-group row">
         <label for="name" class="col-4 col-form-label">Name</label>
         <div class="col-8">
@@ -74,7 +74,8 @@
 
     <div class="form-group row">
         <div class="offset-4 col-8">
+            {{--{{ html()->button('Submit', 'submit', 'submit')->class('btn btn-primary') }}--}}
             <button name="submit" type="submit" class="btn btn-primary">Submit</button>
         </div>
     </div>
-</form>
+{{ html()->form()->close() }}
