@@ -13,14 +13,18 @@ return [
     ],
 
     'dog' => [
-        /*
-         * Whether the captcha is on or off for dog creation.
-         */
+
         'captcha' => [
+            /*
+            * Whether the captcha is on or off for dog creation.
+            */
             'create' => env('DOG_CREATE_CAPTCHA_STATUS', false),
+            /*
+            * Whether the captcha is on or off for dog edit.
+            */
             'edit' => env('DOG_EDIT_CAPTCHA_STATUS', false),
 
-            ]
+        ]
     ],
 
     /*

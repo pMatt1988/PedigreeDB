@@ -9,8 +9,8 @@ class SearchController extends Controller
 {
     //
 
-    public function result(Request $request) {
-        $result = Dog::where('name', "LIKE", "%{$request->input('query')}%")->get()->toJson();
+    public function result($query) {
+        $result = Dog::where('name', "LIKE", "%{$query}%")->get()->toJson();
         return $result;
     }
 }

@@ -20,14 +20,14 @@
                     <form autocomplete="off">
                         <div class="row">
                             <div class="col-8 offset-2">
-                                <input type="text" name="search" id="search"
+                                <input type="text" name="search" id="ajaxsearch"
                                        class="form-control" placeholder="Start typing to search.">
                             </div>
                         </div>
 
                     </form>
 
-                    <div id="search-contents"></div>
+                    <div id="search-contents" class="mt-5"></div>
 
                 </div>
             </div><!--card-->
@@ -36,36 +36,15 @@
 @endsection
 
 @push('after-scripts')
-    {{ script("js/typeahead.bundle.js" )}}
+    {{ script('js/ajaxsearch.js') }}
     <script type="text/javascript">
-        let path = "{{ url('autocomplete') }}";
-        //let contents = $('#search-contents').toElement;
 
-        $('#search').typeahead({
-            minLength: 3,
-            source:
-                function (query) {
-                console.log('test');
-                    $.ajax({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        url: path,
-                        type: 'POST',
-                        data: {query: query},
-                        dataType: 'json',
-                        async: true,
-                        success: function (data) {
-                            console.log('test');
-                            return data;
-                        }
 
-                    });
-                },
+        $('#ajaxsearch').ajaxsearch({
+            container: $('search-contents'),
         });
 
 
     </script>
-
-    <img src="" alt="" style="text-align: center;">
+    {{--<img src="" alt="" style="text-align: center;">--}}
 @endpush

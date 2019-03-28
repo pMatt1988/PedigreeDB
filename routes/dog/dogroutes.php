@@ -10,4 +10,4 @@ Route::get('dogs/{id}/edit', [DogController::class, 'edit'])->middleware('auth')
 Route::patch('dogs/{id}', [DogController::class, 'update'])->middleware('auth');;
 Route::delete('dogs/{id}', [DogController::class, 'destroy'])->middleware('admin');;
 
-Route::post('autocomplete', 'SearchController@result');
+Route::get('autocomplete/{query}', 'SearchController@result');
