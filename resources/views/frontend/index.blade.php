@@ -20,7 +20,7 @@
                     <form autocomplete="off">
                         <div class="row">
                             <div class="col-8 offset-2">
-                                <input type="text" name="search" id="ajaxsearch"
+                                <input type="text" name="ajaxsearch" id="ajaxsearch"
                                        class="form-control" placeholder="Start typing to search.">
                             </div>
                         </div>
@@ -41,7 +41,9 @@
 
 
         $('#ajaxsearch').ajaxsearch({
-            container: $('search-contents'),
+            container: $('#search-contents'),
+            min: 3,
+            cooldown: 500,
         });
 
 
