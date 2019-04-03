@@ -1,9 +1,7 @@
 <?php
 
 namespace App;
-
-use Awobaz\Compoships\Compoships;
-use Illuminate\Database\Eloquent\Model;
+use Awobaz\Compoships\Database\Eloquent\Model;
 
 
 /**
@@ -54,15 +52,14 @@ class Dog extends Model
 {
     //
 
-    use Compoships;
 
 
 
     protected $fillable = [
         'user_id',
         'name',
-        'sireid',
-        'damid',
+        'sire',
+        'dam',
         'sex',
         'dob',
         'pretitle',
@@ -77,15 +74,28 @@ class Dog extends Model
         return $user = $this->belongsTo('App\Models\Auth\User');
     }
 
-    public function sire() {
-        return $sire = $this->hasOne(Dog::class, 'id', 'sireid');
+    public function father() {
+        return $sire = $this->hasOne(Dog::class, 'name', 'sire');
     }
 
-    public function dam() {
-        return $dam = $this->hasOne(Dog::class, 'id', 'damid');
+    public function mother() {
+        return $dam = $this->hasOne(Dog::class, 'name', 'dam');
+    }
+
+    public function parents() {
+        $father = $this->father();
+        return $this->mother()->union($father);
     }
 
     public function offspring() {
-        return $offspring = $this->hasMany(Dog::class, 'id', ['sireid', 'damid']);
+        if($this->sex == 'male') {
+            return $offspring = $this->hasMany(Dog::class, 'sire', 'name');
+        }
+        if($this->sex == 'female'){
+            return $this->hasMany(Dog::class, 'dam', 'name');
+        }
     }
+
+
+
 }

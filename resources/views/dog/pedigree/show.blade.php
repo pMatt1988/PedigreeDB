@@ -1,16 +1,16 @@
 @extends('frontend.layouts.app')
 
-@section('title', app_name() . ' | ' . "Add a Dog!")
+@section('title', app_name() . ' | ' . "Pedigree")
 
 @section('content')
     <div class="row">
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <strong>Add a dog to the database.</strong>
+                    <strong>$DOGS PEDIGREE</strong>
                 </div><!--card-header-->
                 <div class="card-body">
-                    @include('dog.form')
+                    <?php echo $output ?>
                 </div><!--card-body-->
             </div><!--card-->
         </div><!--col-->

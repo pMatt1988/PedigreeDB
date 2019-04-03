@@ -13,4 +13,9 @@ class SearchController extends Controller
         $result = Dog::where('name', "LIKE", "%{$query}%")->get()->toJson();
         return $result;
     }
+
+    public function resultsex($query, $sex) {
+        $result = Dog::where([['name', "LIKE", "%{$query}%"], ["sex", "=", $sex]])->get()->toJson();
+        return $result;
+    }
 }

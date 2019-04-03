@@ -36,7 +36,7 @@ class PermissionRoleTableSeeder extends Seeder
         $admin->givePermissionTo(Permission::all());
 
         // Assign Permissions to other Roles
-        $executive->givePermissionTo(['view backend', 'edit dogs', 'view dogs', 'create dogs']);
+        $executive->givePermissionTo(['view backend', 'edit dogs', 'delete dogs', 'view dogs', 'create dogs']);
         $user->givePermissionTo(['view dogs', 'create dogs']);
 
 

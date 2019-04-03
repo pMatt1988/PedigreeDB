@@ -42,8 +42,7 @@
 
         $('#ajaxsearch').ajaxsearch({
             container: $('#search-contents'),
-            min: 3,
-            cooldown: 500,
+            stopTyping: 400,
         });
 
 

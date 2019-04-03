@@ -34,39 +34,49 @@ class DogController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
 
         $validated = $request->validate([
-           'name' => 'required',
-            'sireid' =>  ['nullable', 'integer'],
-            'damid' => ['nullable', 'integer'],
+            'name' => ['required', 'unique:dogs,name'],
+            'sire' => ['nullable'],
+            'dam' => ['nullable'],
             'sex' => ['required', 'in:male,female'],
             'dob' => ['nullable', 'date_format:Y-m-d'],
-            'pretitle' => ['nullable','max:32'],
+            'pretitle' => ['nullable', 'max:32'],
             'posttitle' => ['nullable', 'max:32'],
             'reg' => ['nullable', 'max:64'],
             'color' => ['nullable', 'max:64'],
             'markings' => ['nullable', 'max:64'],
         ]);
         $validated['user_id'] = Auth::id();
+
+        $sire = Dog::where('name', '=', $validated['sire']);
+        if ($sire)
+            $validated['sire_id'] = $sire->id;
+
+        $dam = Dog::where('name', '=', $validated['dam']);
+        if ($dam)
+            $validated['dam_id'] = $dam->id;
+
         Dog::create($validated);
+
         return redirect('dogs');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Dog $dog
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Dog $dog)
+    public function show($id)
     {
         //
-
+        $dog = Dog::findOrFail($id);
 
         return view('dog.show', compact('dog'));
     }
@@ -74,12 +84,13 @@ class DogController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Dog $dog
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Dog $dog)
+    public function edit($id)
     {
         //
+        $dog = Dog::find($id);
 
         return view('dog.edit', compact('dog'));
     }
@@ -87,23 +98,52 @@ class DogController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  Dog $dog
+     * @param \Illuminate\Http\Request $request
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Dog $dog)
+    public function update($id)
     {
         //
+        $dog = Dog::findOrFail($id);
+        $validated = request()->validate([
+            'name' => ['required'],
+            'sire' => ['nullable'],
+            'dam' => ['nullable'],
+            'sex' => ['required', 'in:male,female'],
+            'dob' => ['nullable', 'date_format:Y-m-d'],
+            'pretitle' => ['nullable', 'max:32'],
+            'posttitle' => ['nullable', 'max:32'],
+            'reg' => ['nullable', 'max:64'],
+            'color' => ['nullable', 'max:64'],
+            'markings' => ['nullable', 'max:64'],
+        ]);
+
+        $sire = Dog::where('name', '=', $validated['sire']);
+        if ($sire)
+            $validated['sire_id'] = $sire->id;
+
+        $dam = Dog::where('name', '=', $validated['dam']);
+        if ($dam)
+            $validated['dam_id'] = $dam->id;
+
+        $dog->update($validated);
+
+        return redirect('dogs/' . $id);
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Dog  $dog
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Dog $dog)
+    public function destroy($id)
     {
         //
+        Dog::destroy($id);
+
+        return redirect('/dogs/');
     }
 }
