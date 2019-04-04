@@ -25,7 +25,9 @@ class PedigreeController extends Controller
 
         $nGenP2 = pow(2, $nGens);
 
-        $output = "<table><tr><td rowspan='{$nGenP2}'>{$dog->name}</td> " . $this->buildOutput($nGens, $parents) . "</tr></table>";
+        $color = $dog->sex == 'female' ? 'table-light text-dark' : 'table-primary text-dark';
+
+        $output = "<table><tr><td rowspan='{$nGenP2}' class='$color'>{$dog->name}</td>" . $this->buildOutput($nGens, $parents) . "</tr></table>";
 
         return view('dog.pedigree.show', compact('output'));
     }
@@ -50,8 +52,9 @@ class PedigreeController extends Controller
         foreach ($parents as $dog) {
 
             if ($nGen > 0) {
+                $color = $dog->sex == 'female' ? 'table-light text-dark' : 'table-primary text-dark';
                 $string .= (
-                    "<td rowspan='{$nGenP2}'><p>{$dog->name}</p>" .
+                    "<td rowspan='{$nGenP2}' class='$color'><p>{$dog->name}</p>" .
                     //"<p>{$dog->color}</p>" .
 
                     "</td>");

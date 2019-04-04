@@ -27,7 +27,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <strong>$DOGS PEDIGREE</strong>
+                    <strong>Pedigree</strong>
                 </div><!--card-header-->
                 <div class="card-body">
                     <?php echo $output ?>
