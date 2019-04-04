@@ -23,7 +23,7 @@
                             @if($dog->father)
                                 <a href="/dogs/{{ $dog->father->id }}">{{ $dog->father->name }}</a>
                             @else
-                                {{ $dog->sire }}
+                                N/A
                             @endif
                         </div>
                     </div>
@@ -35,7 +35,7 @@
                             @if($dog->mother)
                                 <a href="/dogs/{{ $dog->mother->id }}">{{ $dog->mother->name }}</a>
                             @else
-                                {{ $dog->dam }}
+                                N/A
                             @endif
                         </div>
                     </div>

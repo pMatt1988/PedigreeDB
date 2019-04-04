@@ -52,14 +52,17 @@ class Dog extends Model
 {
     //
 
-
+    protected $attributes = [
+        'sire_id' => 0,
+        'dam_id' => 0
+    ];
 
 
     protected $fillable = [
         'user_id',
         'name',
-        'sire',
-        'dam',
+        'sire_id',
+        'dam_id',
         'sex',
         'dob',
         'pretitle',
@@ -75,11 +78,11 @@ class Dog extends Model
     }
 
     public function father() {
-        return $sire = $this->hasOne(Dog::class, 'name', 'sire');
+        return $sire = $this->hasOne(Dog::class, 'id', 'sire_id');
     }
 
     public function mother() {
-        return $dam = $this->hasOne(Dog::class, 'name', 'dam');
+        return $dam = $this->hasOne(Dog::class, 'id', 'dam_id');
     }
 
     public function parents() {
@@ -89,10 +92,10 @@ class Dog extends Model
 
     public function offspring() {
         if($this->sex == 'male') {
-            return $offspring = $this->hasMany(Dog::class, 'sire', 'name');
+            return $offspring = $this->hasMany(Dog::class, 'sire_id', 'id');
         }
         if($this->sex == 'female'){
-            return $this->hasMany(Dog::class, 'dam', 'name');
+            return $this->hasMany(Dog::class, 'dam_id', 'id');
         }
     }
 

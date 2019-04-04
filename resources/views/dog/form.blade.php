@@ -1,5 +1,8 @@
 {{--<form action='/dogs' method="POST">--}}
-{{ html()->form('POST', '/dogs')->class('form-horizontal')->open() }}
+{{ html()->form('POST', '/dogs')->class('form-horizontal')->attribute('autocomplete="off"')->open() }}
+
+<input id="sire_id" name="sire_id" type="hidden" value="{{ old('sire_id', "0") }}">
+<input id="dam_id" name="dam_id" type="hidden" value="{{ old('dam_id', "0") }}">
 <div class="form-group row">
     <label for="name" class="col-4 col-form-label">Name</label>
     <div class="col-8">
@@ -91,7 +94,6 @@
             fitToElement: true,
             source: function(query, process) {
                 $.get('../autocomplete/' + query + '/male', function(data) {
-                    console.log(data);
                     return process(JSON.parse(data))
                 });
             },
@@ -104,7 +106,6 @@
             fitToElement: true,
             source: function(query, process) {
                 $.get('../autocomplete/' + query + '/female', function(data) {
-                    console.log(data);
                     return process(JSON.parse(data))
                 })
             },

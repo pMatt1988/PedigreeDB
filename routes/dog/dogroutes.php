@@ -14,4 +14,7 @@ Route::delete('dogs/{id}', [DogController::class, 'destroy'])->middleware('admin
 Route::get('autocomplete/{query}', 'SearchController@result');
 Route::get('autocomplete/{query}/{sex}', 'SearchController@resultsex');
 
+Route::get('pedigree/sample', [PedigreeController::class, 'SampleTable']);
 Route::get('pedigree/{id}/{nGens}', [PedigreeController::class, 'show']);
+Route::get('pedigree/{id}', [PedigreeController::class, 'GeneratePedigree']);
+

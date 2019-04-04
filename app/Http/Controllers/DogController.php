@@ -42,8 +42,8 @@ class DogController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'unique:dogs,name'],
-            'sire' => ['nullable'],
-            'dam' => ['nullable'],
+            'sire_id' => ['integer'],
+            'dam_id' => ['integer'],
             'sex' => ['required', 'in:male,female'],
             'dob' => ['nullable', 'date_format:Y-m-d'],
             'pretitle' => ['nullable', 'max:32'],
@@ -54,13 +54,47 @@ class DogController extends Controller
         ]);
         $validated['user_id'] = Auth::id();
 
-        $sire = Dog::where('name', '=', $validated['sire']);
-        if ($sire)
-            $validated['sire_id'] = $sire->id;
+        if (request('sire') != null) {
+            $sire = Dog::where('name', request('sire'))->first();
+            if ($sire != null) {
+                if($sire->sex == "female"){
+                    $error = \Illuminate\Validation\ValidationException::withMessages([
+                        'sire' => ['The dog that you have selected in the sire field is not female.'],
+                    ]);
+                    throw $error;
+                }
+                $validated['sire_id'] = $sire->id;
+            } else {
+                $error = \Illuminate\Validation\ValidationException::withMessages([
+                    'sire' => ['The sire that you have selected does not exist in the database.
+                    Please create the sire first or leave this field blank.'],
+                ]);
+                throw $error;
+            }
 
-        $dam = Dog::where('name', '=', $validated['dam']);
-        if ($dam)
-            $validated['dam_id'] = $dam->id;
+        }
+
+        if (request('dam') != null) {
+
+            $dam = Dog::where('name', request('dam'))->first();
+            if ($dam != null) {
+                if($dam->sex == "male"){
+                    $error = \Illuminate\Validation\ValidationException::withMessages([
+                        'dam' => ['The dog that you have selected in the dam field is not female.'],
+                    ]);
+                    throw $error;
+                }
+                $validated['dam_id'] = $dam->id;
+            } else {
+                $error = \Illuminate\Validation\ValidationException::withMessages([
+                    'dam' => ['The dam that you have selected does not exist in the database.
+                    Please create the dam first or leave this field blank.'],
+                ]);
+                throw $error;
+            }
+
+        }
+
 
         Dog::create($validated);
 
@@ -76,7 +110,7 @@ class DogController extends Controller
     public function show($id)
     {
         //
-        $dog = Dog::findOrFail($id);
+        $dog = Dog::with(['mother', 'father'])->findOrFail($id);
 
         return view('dog.show', compact('dog'));
     }
@@ -90,7 +124,7 @@ class DogController extends Controller
     public function edit($id)
     {
         //
-        $dog = Dog::find($id);
+        $dog = Dog::with(['mother', 'father'])->find($id);
 
         return view('dog.edit', compact('dog'));
     }
@@ -108,8 +142,8 @@ class DogController extends Controller
         $dog = Dog::findOrFail($id);
         $validated = request()->validate([
             'name' => ['required'],
-            'sire' => ['nullable'],
-            'dam' => ['nullable'],
+            'sire_id' => ['integer'],
+            'dam_id' => ['integer'],
             'sex' => ['required', 'in:male,female'],
             'dob' => ['nullable', 'date_format:Y-m-d'],
             'pretitle' => ['nullable', 'max:32'],
@@ -119,13 +153,46 @@ class DogController extends Controller
             'markings' => ['nullable', 'max:64'],
         ]);
 
-        $sire = Dog::where('name', '=', $validated['sire']);
-        if ($sire)
-            $validated['sire_id'] = $sire->id;
+        if (request('sire') != null) {
+            $sire = Dog::where('name', request('sire'))->first();
+            if ($sire != null) {
+                if($sire->sex == "female"){
+                    $error = \Illuminate\Validation\ValidationException::withMessages([
+                        'sire' => ['The dog that you have selected in the sire field is not female.'],
+                    ]);
+                    throw $error;
+                }
+                $validated['sire_id'] = $sire->id;
+            } else {
+                $error = \Illuminate\Validation\ValidationException::withMessages([
+                    'sire' => ['The sire that you have selected does not exist in the database.
+                    Please create the sire first or leave this field blank.'],
+                ]);
+                throw $error;
+            }
 
-        $dam = Dog::where('name', '=', $validated['dam']);
-        if ($dam)
-            $validated['dam_id'] = $dam->id;
+        }
+
+        if (request('dam') != null) {
+
+            $dam = Dog::where('name', request('dam'))->first();
+            if ($dam != null) {
+                if($dam->sex == "male"){
+                    $error = \Illuminate\Validation\ValidationException::withMessages([
+                        'dam' => ['The dog that you have selected in the dam field is not female.'],
+                    ]);
+                    throw $error;
+                }
+                $validated['dam_id'] = $dam->id;
+            } else {
+                $error = \Illuminate\Validation\ValidationException::withMessages([
+                    'dam' => ['The dam that you have selected does not exist in the database.
+                    Please create the dam first or leave this field blank.'],
+                ]);
+                throw $error;
+            }
+
+        }
 
         $dog->update($validated);
 

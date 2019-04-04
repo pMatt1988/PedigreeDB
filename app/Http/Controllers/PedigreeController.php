@@ -10,13 +10,16 @@ class PedigreeController extends Controller
     public function GeneratePedigree($id)
     {
         $dog = Dog::findOrFail($id);
-        dd($dog->parents()->get());
+        $dog->offspring;
+        dd($dog);
     }
 
     protected $nGens = 5;
 
     public function show($id, $nGens)
     {
+
+
         $dog = Dog::findOrFail($id);
 
         $parents = $dog->parents()->get();
@@ -35,17 +38,13 @@ class PedigreeController extends Controller
 
         $string = '<div>';
         $columnWidth = 12;
-        if ($nGen > 1) {
-            $columnWidth = 12 / $nGen;
 
-        }
+        foreach ($parents as $dog) {
 
-        foreach ($parents as $parent) {
-
-            $string .= "<div class='row'><div class='border border-danger col-{$columnWidth}'>$parent->name</div>";
+            $string .= "<div class='row'><div class='border border-dark col-3'>{$dog['name']}</div>";
             if ($nGen > 0) {
                 $string .= "<div class='col'>";
-                $p = $parent->parents()->get();
+                $p = $dog->parents()->get();
                 $string .= $this->buildOutput($nGen - 1, $p);
                 $string .= "</div>";
             }
