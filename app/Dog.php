@@ -86,8 +86,8 @@ class Dog extends Model
     }
 
     public function parents() {
-        $father = $this->father();
-        return $this->mother()->union($father);
+        $mother = $this->mother();
+        return $this->father()->union($mother);
     }
 
     public function offspring() {

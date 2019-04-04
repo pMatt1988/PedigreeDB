@@ -14,7 +14,6 @@ class PedigreeController extends Controller
         dd($dog);
     }
 
-    protected $nGens = 5;
 
     public function show($id, $nGens)
     {
@@ -24,37 +23,52 @@ class PedigreeController extends Controller
 
         $parents = $dog->parents()->get();
 
-        $output = $this->buildOutput($nGens - 1, $parents);
+        $nGenP2 = pow(2, $nGens);
+
+        $output = "<table><tr><td rowspan='{$nGenP2}'>{$dog->name}</td> " . $this->buildOutput($nGens, $parents) . "</tr></table>";
 
         return view('dog.pedigree.show', compact('output'));
     }
 
+    protected $iterations = 1;
+
     protected function buildOutput(Int $nGen, $parents)
     {
-        $maleSire = null;
-        $maleDam = null;
-        $femaleSire = null;
-        $femaleDam = null;
 
-        $string = '<div>';
+        $nGen -= 1;
+
+
+        $nGenP2 = pow(2, $nGen - 1);
+
+        $string = '';
         $columnWidth = 12;
+        if ($nGen > 0) {
+            $this->iterations++;
+        }
+
 
         foreach ($parents as $dog) {
 
-            $string .= "<div class='row'><div class='border border-dark col-3'>{$dog['name']}</div>";
             if ($nGen > 0) {
-                $string .= "<div class='col'>";
+                $string .= (
+                    "<td rowspan='{$nGenP2}'><p>{$dog->name}</p>" .
+                    //"<p>{$dog->color}</p>" .
+
+                    "</td>");
                 $p = $dog->parents()->get();
-                $string .= $this->buildOutput($nGen - 1, $p);
-                $string .= "</div>";
+                $string .= $this->buildOutput($nGen, $parents);
             }
 
-            $string .= "</div>";
+        }
+
+        if ($nGen == 0) {
+
+            $string .= '</tr><tr>';
 
         }
 
 
-        return $string . "</div>";
+        return $string;
 
     }
 }
