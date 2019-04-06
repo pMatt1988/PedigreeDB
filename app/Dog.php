@@ -66,6 +66,11 @@ class Dog extends Model
         'markings',
     ];
 
+    public function getDates()
+    {
+        return ['dob'];
+    }
+
     public function mother()
     {
         if ($this->parents == null) return null;

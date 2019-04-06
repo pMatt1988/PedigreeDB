@@ -40,6 +40,15 @@
                         </div>
                     </div>
 
+                    @if($dog->dob)
+                        <div class="row">
+                            <div class="col-2 text-right">Dob:</div>
+
+                            <div class="col">
+                                {{$dog->dob->format('Y-m-d')}}
+                            </div>
+                        </div>
+                    @endif
 
 
                 </div><!--card-body-->

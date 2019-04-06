@@ -35,7 +35,7 @@ class PedigreeController extends Controller
         $color = $dog->sex == 'female' ? 'table-light text-dark' : 'table-primary text-dark';
 
         //$output = null;
-        $output = "<table><tr><td rowspan='{$nGenP2}' class='$color'>{$dog->name}</td>" . $this->buildOutput($nGens, $this->GetParentsArray($dog)) . "</tr></table>";
+        $output = '<table><tr><td rowspan="'. $nGenP2. '" class="' . $color . '">' . $dog->name . '</td>' . $this->buildOutput($nGens, $this->GetParentsArray($dog)) . '</tr></table>';
         return view('dog.pedigree.show', compact('output'));
     }
 
@@ -60,10 +60,10 @@ class PedigreeController extends Controller
                 if($dog->sex == null) $color = 'table-danger text-dark';
                 $dogname = $dog->name ?? 'N/a';
                 $string .= (
-                    "<td rowspan='{$nGenP2}' class='$color'><p>{$dogname}</p>" .
+                    '<td rowspan="'. $nGenP2. '" class="'.$color.'"><p>'. $dogname . '</p>' .
                     //"<p>{$dog->color}</p>" .
 
-                    "</td>");
+                    '</td>');
                 $string .= $this->buildOutput($nGen, $this->GetParentsArray($dog));
 
             }
