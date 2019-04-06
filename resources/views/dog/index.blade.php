@@ -15,6 +15,7 @@
                     </ul>
                 </div><!--card-body-->
             </div><!--card-->
+            <a href="/dogs/create"><i class="fas fa-plus"></i></a>
         </div><!--col-->
     </div><!--row-->
 @endsection

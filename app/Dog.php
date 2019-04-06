@@ -1,7 +1,9 @@
 <?php
 
 namespace App;
+
 use Awobaz\Compoships\Database\Eloquent\Model;
+use Eloquent;
 
 
 /**
@@ -46,23 +48,15 @@ use Awobaz\Compoships\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereSireid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Dog whereUserId($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Dog extends Model
 {
     //
 
-    protected $attributes = [
-        'sire_id' => 0,
-        'dam_id' => 0
-    ];
-
-
     protected $fillable = [
         'user_id',
         'name',
-        'sire_id',
-        'dam_id',
         'sex',
         'dob',
         'pretitle',
@@ -72,33 +66,33 @@ class Dog extends Model
         'markings',
     ];
 
-    public function user() {
+    public function mother()
+    {
+        if ($this->parents == null) return null;
 
-        return $user = $this->belongsTo('App\Models\Auth\User');
-    }
-
-    public function father() {
-        return $sire = $this->hasOne(Dog::class, 'id', 'sire_id');
-    }
-
-    public function mother() {
-        return $dam = $this->hasOne(Dog::class, 'id', 'dam_id');
-    }
-
-    public function parents() {
-        $mother = $this->mother();
-        return $this->father()->union($mother);
-    }
-
-    public function offspring() {
-        if($this->sex == 'male') {
-            return $offspring = $this->hasMany(Dog::class, 'sire_id', 'id');
+        foreach ($this->parents as $parent) {
+            if ($parent->sex == 'female')
+                return $parent;
         }
-        if($this->sex == 'female'){
-            return $this->hasMany(Dog::class, 'dam_id', 'id');
-        }
+
+        return null;
     }
 
+    public function father()
+    {
+        if ($this->parents == null) return null;
+        foreach ($this->parents as $parent) {
+            if ($parent->sex == 'male')
+                return $parent;
+        }
+
+        return null;
+    }
+
+    public function parents()
+    {
+        return $this->belongsToMany(Dog::class, 'dog_relationship', 'dog_id', 'parent_id', 'id')->withPivot('relation');
+    }
 
 
 }

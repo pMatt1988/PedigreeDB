@@ -14,11 +14,9 @@ class CreateDogsTable extends Migration
     public function up()
     {
         Schema::create('dogs', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id')->index();
             $table->integer('user_id');
             $table->string("name", 32)->unique();
-            $table->string('sire', 32)->nullable();
-            $table->string('dam',  32)->nullable();
             $table->string('sex');
             $table->date('dob')->nullable();
             $table->string('pretitle', 32)->nullable();

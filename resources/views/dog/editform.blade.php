@@ -1,7 +1,5 @@
 {{--<form action='/dogs' method="POST">--}}
 {{ html()->form('PATCH', "/dogs/{$dog->id}")->class('form-horizontal')->attribute('autocomplete="off"')->open() }}
-<input id="sire_id" name="sire_id" type="hidden" value="{{ old('sire_id', "0") }}">
-<input id="dam_id" name="dam_id" type="hidden" value="{{ old('dam_id', "0") }}">
 <div class="form-group row">
     <label for="name" class="col-4 col-form-label">Name</label>
     <div class="col-8">
@@ -11,14 +9,14 @@
 <div class="form-group row">
     <label for="sire" class="col-4 col-form-label">Sire</label>
     <div class="col-8">
-        <input id="sire" name="sire" type="text" class="form-control" value="{{ old('sire', ($dog->father != null) ? $dog->father->name : null) }}">
+        <input id="sire" name="sire" type="text" class="form-control" value="{{ old('sire', ($dog->father() != null) ? $dog->father()->name : null) }}">
 
     </div>
 </div>
 <div class="form-group row">
     <label for="dam" class="col-4 col-form-label">Dam</label>
     <div class="col-8">
-        <input id="dam" name="dam" type="text" class="form-control" value="{{ old('dam', ($dog->mother != null) ? $dog->mother->name : null) }}">
+        <input id="dam" name="dam" type="text" class="form-control" value="{{ old('dam', ($dog->mother() != null) ? $dog->mother()->name : null) }}">
     </div>
 </div>
 <div class="form-group row">

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddIdsToDogsTable extends Migration
+class AddImageUrlFieldToDogs extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,9 @@ class AddIdsToDogsTable extends Migration
     public function up()
     {
         Schema::table('dogs', function (Blueprint $table) {
-            $table->integer('sire_id');
-            $table->integer('dam_id');
+
+            $table->string('image_url')->nullable();
+            //
         });
     }
 
@@ -27,8 +28,8 @@ class AddIdsToDogsTable extends Migration
     public function down()
     {
         Schema::table('dogs', function (Blueprint $table) {
+            $table->dropColumn('image_url');
             //
-            $table->dropColumn(['sire_id', 'dam_id']);
         });
     }
 }

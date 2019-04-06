@@ -13,6 +13,7 @@
                     @include('dog.form')
                 </div><!--card-body-->
             </div><!--card-->
+
         </div><!--col-->
     </div><!--row-->
 @endsection

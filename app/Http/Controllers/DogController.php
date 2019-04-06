@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Dog;
 use Auth;
+use DB;
 use Illuminate\Http\Request;
 
 class DogController extends Controller
@@ -42,8 +43,6 @@ class DogController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'unique:dogs,name'],
-            'sire_id' => ['integer'],
-            'dam_id' => ['integer'],
             'sex' => ['required', 'in:male,female'],
             'dob' => ['nullable', 'date_format:Y-m-d'],
             'pretitle' => ['nullable', 'max:32'],
@@ -53,50 +52,35 @@ class DogController extends Controller
             'markings' => ['nullable', 'max:64'],
         ]);
         $validated['user_id'] = Auth::id();
+        $dog = Dog::create($validated);
 
-        if (request('sire') != null) {
-            $sire = Dog::where('name', request('sire'))->first();
-            if ($sire != null) {
-                if($sire->sex == "female"){
-                    $error = \Illuminate\Validation\ValidationException::withMessages([
-                        'sire' => ['The dog that you have selected in the sire field is not female.'],
-                    ]);
-                    throw $error;
-                }
-                $validated['sire_id'] = $sire->id;
-            } else {
-                $error = \Illuminate\Validation\ValidationException::withMessages([
-                    'sire' => ['The sire that you have selected does not exist in the database.
-                    Please create the sire first or leave this field blank.'],
+        $dog->refresh();
+        $sire = Dog::where('name', '=', request('sire'))->first();
+
+        if ($sire != null) {
+            DB::table('dog_relationship')->updateOrInsert(
+                [
+                    'dog_id' => $dog->id,
+                    'relation' => 'sire'
+                ],
+                [
+                    'parent_id' => $sire->id
                 ]);
-                throw $error;
-            }
-
         }
 
-        if (request('dam') != null) {
+        $dam = Dog::where('name', '=', request('dam'))->first();
 
-            $dam = Dog::where('name', request('dam'))->first();
-            if ($dam != null) {
-                if($dam->sex == "male"){
-                    $error = \Illuminate\Validation\ValidationException::withMessages([
-                        'dam' => ['The dog that you have selected in the dam field is not female.'],
-                    ]);
-                    throw $error;
-                }
-                $validated['dam_id'] = $dam->id;
-            } else {
-                $error = \Illuminate\Validation\ValidationException::withMessages([
-                    'dam' => ['The dam that you have selected does not exist in the database.
-                    Please create the dam first or leave this field blank.'],
+        if ($dam != null) {
+            DB::table('dog_relationship')->updateOrInsert(
+                [
+                    'dog_id' => $dog->id,
+                    'relation' => 'dam'
+                ],
+                [
+                    'parent_id' => $dam->id
                 ]);
-                throw $error;
-            }
-
         }
 
-
-        Dog::create($validated);
 
         return redirect('dogs');
     }
@@ -110,8 +94,7 @@ class DogController extends Controller
     public function show($id)
     {
         //
-        $dog = Dog::with(['mother', 'father'])->findOrFail($id);
-
+        $dog = Dog::with(['parents'])->findOrFail($id);
         return view('dog.show', compact('dog'));
     }
 
@@ -124,7 +107,7 @@ class DogController extends Controller
     public function edit($id)
     {
         //
-        $dog = Dog::with(['mother', 'father'])->find($id);
+        $dog = Dog::with('parents')->find($id);
 
         return view('dog.edit', compact('dog'));
     }
@@ -142,8 +125,8 @@ class DogController extends Controller
         $dog = Dog::findOrFail($id);
         $validated = request()->validate([
             'name' => ['required'],
-            'sire_id' => ['integer'],
-            'dam_id' => ['integer'],
+            'sire' => ['nullable', 'exists:dogs,name'],
+            'dam' => ['nullable', 'exists:dogs,name'],
             'sex' => ['required', 'in:male,female'],
             'dob' => ['nullable', 'date_format:Y-m-d'],
             'pretitle' => ['nullable', 'max:32'],
@@ -153,48 +136,34 @@ class DogController extends Controller
             'markings' => ['nullable', 'max:64'],
         ]);
 
-        if (request('sire') != null) {
-            $sire = Dog::where('name', request('sire'))->first();
-            if ($sire != null) {
-                if($sire->sex == "female"){
-                    $error = \Illuminate\Validation\ValidationException::withMessages([
-                        'sire' => ['The dog that you have selected in the sire field is not female.'],
-                    ]);
-                    throw $error;
-                }
-                $validated['sire_id'] = $sire->id;
-            } else {
-                $error = \Illuminate\Validation\ValidationException::withMessages([
-                    'sire' => ['The sire that you have selected does not exist in the database.
-                    Please create the sire first or leave this field blank.'],
-                ]);
-                throw $error;
-            }
-
-        }
-
-        if (request('dam') != null) {
-
-            $dam = Dog::where('name', request('dam'))->first();
-            if ($dam != null) {
-                if($dam->sex == "male"){
-                    $error = \Illuminate\Validation\ValidationException::withMessages([
-                        'dam' => ['The dog that you have selected in the dam field is not female.'],
-                    ]);
-                    throw $error;
-                }
-                $validated['dam_id'] = $dam->id;
-            } else {
-                $error = \Illuminate\Validation\ValidationException::withMessages([
-                    'dam' => ['The dam that you have selected does not exist in the database.
-                    Please create the dam first or leave this field blank.'],
-                ]);
-                throw $error;
-            }
-
-        }
-
         $dog->update($validated);
+        $dog->refresh();
+
+        $sire = Dog::where('name', '=', request('sire'))->first();
+
+        if ($sire != null) {
+            DB::table('dog_relationship')->updateOrInsert(
+                [
+                    'dog_id' => $dog->id,
+                    'relation' => 'sire'
+                ],
+                [
+                    'parent_id' => $sire->id
+                ]);
+        }
+
+        $dam = Dog::where('name', '=', request('dam'))->first();
+
+        if ($dam != null) {
+            DB::table('dog_relationship')->updateOrInsert(
+                [
+                    'dog_id' => $dog->id,
+                    'relation' => 'dam'
+                ],
+                [
+                    'parent_id' => $dam->id
+                ]);
+        }
 
         return redirect('dogs/' . $id);
 
