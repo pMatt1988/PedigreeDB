@@ -1,5 +1,5 @@
 {{--<form action='/dogs' method="POST">--}}
-{{ html()->form('POST', '/dogs')->class('form-horizontal')->attribute('autocomplete="off"')->open() }}
+{{ html()->form('POST', '/dogs')->class('form-horizontal')->attribute('autocomplete="off" enctype="multipart/form-data"')->open() }}
 
 <div class="form-group row">
     <label for="name" class="col-4 col-form-label">Name</label>
@@ -75,6 +75,13 @@
 </div>
 
 <div class="form-group row">
+    <label for="image" class="col-4 col-form-label">Image</label>
+    <div class="col-8">
+        <input id="image" name="image" type="file" class="form-control-file" value="{{ old('image') }}">
+    </div>
+</div>
+
+<div class="form-group row">
     <div class="offset-4 col-8">
         {{--{{ html()->button('Submit', 'submit', 'submit')->class('btn btn-primary') }}--}}
         <button name="submit" type="submit" class="btn btn-primary">Submit</button>
@@ -90,8 +97,8 @@
         $('#sire').typeahead({
             minLength: 3,
             fitToElement: true,
-            source: function(query, process) {
-                $.get('../autocomplete/' + query + '/male', function(data) {
+            source: function (query, process) {
+                $.get('../autocomplete/' + query + '/male', function (data) {
                     return process(JSON.parse(data))
                 });
             },
@@ -102,8 +109,8 @@
         $('#dam').typeahead({
             minLength: 3,
             fitToElement: true,
-            source: function(query, process) {
-                $.get('../autocomplete/' + query + '/female', function(data) {
+            source: function (query, process) {
+                $.get('../autocomplete/' + query + '/female', function (data) {
                     return process(JSON.parse(data))
                 })
             },

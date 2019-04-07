@@ -16,7 +16,7 @@ class AddImageUrlFieldToDogs extends Migration
         Schema::table('dogs', function (Blueprint $table) {
 
             $table->string('image_url')->nullable();
-            $table->string('thumbnail_url');
+            $table->string('thumbnail_url')->nullable();
             //
         });
     }

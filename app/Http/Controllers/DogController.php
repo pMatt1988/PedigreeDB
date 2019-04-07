@@ -51,42 +51,34 @@ class DogController extends Controller
             'reg' => ['nullable', 'max:64'],
             'color' => ['nullable', 'max:64'],
             'markings' => ['nullable', 'max:64'],
-            'image' => ['nullable', Rule::dimensions()->maxWidth(900)->maxHeight(900)],
-            'image_url' => ['nullable', 'url'],
+            'image' => ['nullable', 'image', Rule::dimensions()->maxWidth(900)->maxHeight(900)],
+
         ]);
         $validated['user_id'] = Auth::id();
+
         $dog = Dog::create($validated);
 
+        //Refresh dog model to make sure our info is up to date!
         $dog->refresh();
-        $sire = Dog::where('name', '=', request('sire'))->first();
 
-        if ($sire != null) {
-            DB::table('dog_relationship')->updateOrInsert(
-                [
-                    'dog_id' => $dog->id,
-                    'relation' => 'sire'
-                ],
-                [
-                    'parent_id' => $sire->id
-                ]);
+        /*
+         * Set up relationships
+         */
+        $this->setUpDogRelationships($dog, ['sire', 'dam']);
+
+        /*
+         * Handle image uploads
+         */
+
+        if (request()->hasFile('image')) {
+            $path = request()->file('image')->store('pedigree/' . $dog->id);
+            $dog->image_url = $path;
+            $dog->save();
         }
-
-        $dam = Dog::where('name', '=', request('dam'))->first();
-
-        if ($dam != null) {
-            DB::table('dog_relationship')->updateOrInsert(
-                [
-                    'dog_id' => $dog->id,
-                    'relation' => 'dam'
-                ],
-                [
-                    'parent_id' => $dam->id
-                ]);
-        }
-
 
         return redirect('dogs');
     }
+
 
     /**
      * Display the specified resource.
@@ -137,36 +129,21 @@ class DogController extends Controller
             'reg' => ['nullable', 'max:64'],
             'color' => ['nullable', 'max:64'],
             'markings' => ['nullable', 'max:64'],
+            'image' => ['nullable', 'image', Rule::dimensions()->maxWidth(480)->maxHeight(480)],
+
         ]);
 
         $dog->update($validated);
+
+        //Refresh dog model to get updated changes.
         $dog->refresh();
 
-        $sire = Dog::where('name', '=', request('sire'))->first();
+        /*
+         * Set up relationships
+         */
+        $this->setUpDogRelationships($dog, ['sire', 'dam']);
 
-        if ($sire != null) {
-            DB::table('dog_relationship')->updateOrInsert(
-                [
-                    'dog_id' => $dog->id,
-                    'relation' => 'sire'
-                ],
-                [
-                    'parent_id' => $sire->id
-                ]);
-        }
-
-        $dam = Dog::where('name', '=', request('dam'))->first();
-
-        if ($dam != null) {
-            DB::table('dog_relationship')->updateOrInsert(
-                [
-                    'dog_id' => $dog->id,
-                    'relation' => 'dam'
-                ],
-                [
-                    'parent_id' => $dam->id
-                ]);
-        }
+        $this->handleImage($dog);
 
         return redirect('dogs/' . $id);
 
@@ -184,5 +161,37 @@ class DogController extends Controller
         Dog::destroy($id);
 
         return redirect('/dogs/');
+    }
+
+
+    private function setUpDogRelationships($dog, $relations)
+    {
+        foreach ($relations as $relation) {
+            $value = request($relation);
+            if ($value === null) continue;
+
+            $parent = Dog::where('name', '=', $value)->first();
+
+            if ($parent != null) {
+                DB::table('dog_relationship')->updateOrInsert(
+                    [
+                        'dog_id' => $dog->id,
+                        'relation' => $relation
+                    ],
+                    [
+                        'parent_id' => $parent->id
+                    ]);
+            }
+        }
+    }
+
+    private function handleImage(Dog $dog)
+    {
+        if (request()->hasFile('image')) {
+            $path = request()->file('image')->store('/public/pedigree-img/' . $dog->id);
+            $path = '/storage/pedigree-img/'. $dog->id . '/' . basename($path);
+            $dog->image_url = $path;
+            $dog->save();
+        }
     }
 }

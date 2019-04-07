@@ -1,5 +1,5 @@
 {{--<form action='/dogs' method="POST">--}}
-{{ html()->form('PATCH', "/dogs/{$dog->id}")->class('form-horizontal')->attribute('autocomplete="off"')->open() }}
+{{ html()->form('PATCH', "/dogs/{$dog->id}")->class('form-horizontal')->attribute('autocomplete="off" enctype="multipart/form-data"')->open() }}
 <div class="form-group row">
     <label for="name" class="col-4 col-form-label">Name</label>
     <div class="col-8">
@@ -9,14 +9,16 @@
 <div class="form-group row">
     <label for="sire" class="col-4 col-form-label">Sire</label>
     <div class="col-8">
-        <input id="sire" name="sire" type="text" class="form-control" value="{{ old('sire', ($dog->father() != null) ? $dog->father()->name : null) }}">
+        <input id="sire" name="sire" type="text" class="form-control"
+               value="{{ old('sire', ($dog->father() != null) ? $dog->father()->name : null) }}">
 
     </div>
 </div>
 <div class="form-group row">
     <label for="dam" class="col-4 col-form-label">Dam</label>
     <div class="col-8">
-        <input id="dam" name="dam" type="text" class="form-control" value="{{ old('dam', ($dog->mother() != null) ? $dog->mother()->name : null) }}">
+        <input id="dam" name="dam" type="text" class="form-control"
+               value="{{ old('dam', ($dog->mother() != null) ? $dog->mother()->name : null) }}">
     </div>
 </div>
 <div class="form-group row">
@@ -45,13 +47,15 @@
 <div class="form-group row">
     <label for="pretitle" class="col-4 col-form-label">Pre-title</label>
     <div class="col-8">
-        <input id="pretitle" name="pretitle" type="text" class="form-control" value="{{ old('pretitle', $dog->pretitle) }}">
+        <input id="pretitle" name="pretitle" type="text" class="form-control"
+               value="{{ old('pretitle', $dog->pretitle) }}">
     </div>
 </div>
 <div class="form-group row">
     <label for="posttitle" class="col-4 col-form-label">Post-title</label>
     <div class="col-8">
-        <input id="posttitle" name="posttitle" type="text" class="form-control" value="{{ old('posttitle', $dog->posttitle) }}">
+        <input id="posttitle" name="posttitle" type="text" class="form-control"
+               value="{{ old('posttitle', $dog->posttitle) }}">
     </div>
 </div>
 <div class="form-group row">
@@ -69,7 +73,15 @@
 <div class="form-group row">
     <label for="markings" class="col-4 col-form-label">Markings</label>
     <div class="col-8">
-        <input id="markings" name="markings" type="text" class="form-control" value="{{ old('markings', $dog->markings) }}">
+        <input id="markings" name="markings" type="text" class="form-control"
+               value="{{ old('markings', $dog->markings) }}">
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="image" class="col-4 col-form-label">Image</label>
+    <div class="col-8">
+        <input id="image" name="image" type="file" class="form-control-file" value="{{ old('image') }}">
     </div>
 </div>
 
@@ -89,8 +101,8 @@
         $('#sire').typeahead({
             minLength: 3,
             fitToElement: true,
-            source: function(query, process) {
-                $.get('../../autocomplete/' + query + '/male', function(data) {
+            source: function (query, process) {
+                $.get('../../autocomplete/' + query + '/male', function (data) {
                     console.log(data);
                     return process(JSON.parse(data));
                 });
@@ -102,8 +114,8 @@
         $('#dam').typeahead({
             minLength: 3,
             fitToElement: true,
-            source: function(query, process) {
-                $.get('../../autocomplete/' + query + '/female', function(data) {
+            source: function (query, process) {
+                $.get('../../autocomplete/' + query + '/female', function (data) {
                     console.log(data);
                     return process(JSON.parse(data));
                 });

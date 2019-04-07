@@ -64,6 +64,8 @@ class Dog extends Model
         'reg',
         'color',
         'markings',
+        'image_url',
+        'thumbnail_url',
     ];
 
     public function getDates()

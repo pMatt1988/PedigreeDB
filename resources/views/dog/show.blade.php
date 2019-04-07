@@ -9,6 +9,9 @@
                     <strong>Dog Name</strong>
                 </div><!--card-header-->
                 <div class="card-body">
+                    @if($dog->image_url != null)
+                        <img src="{{$dog->image_url}}" alt="blah">
+                    @endif
 
                     <div class="row">
                         <div class="col-2 text-right">Name:</div>
