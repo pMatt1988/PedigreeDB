@@ -44,7 +44,6 @@ class DogController extends Controller
      */
     public function store(Request $request)
     {
-        //MYTODO: Add image uploads
         $validated = $request->validate([
             'name' => ['required', 'unique:dogs,name'],
             'sex' => ['required', 'in:male,female'],
