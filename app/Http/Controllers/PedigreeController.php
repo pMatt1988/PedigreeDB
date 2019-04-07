@@ -24,18 +24,15 @@ class PedigreeController extends Controller
             $nest[] = 'parents';
         }
         $nestString = implode('.', $nest);
-        $start = microtime(true);
         $dog = Dog::with($nestString)->findOrFail($id);
-        $time = microtime(true) - $start;
-        echo $time;
 
 
         $nGenP2 = pow(2, $nGens);
 
-        $color = $dog->sex == 'female' ? 'table-light text-dark' : 'table-primary text-dark';
+        $color = $dog->sex === 'female' ? 'table-light text-dark' : 'table-primary text-dark';
 
         //$output = null;
-        $output = '<table><tr><td rowspan="'. $nGenP2. '" class="' . $color . '">' . $dog->name . '</td>' . $this->buildOutput($nGens, $this->GetParentsArray($dog)) . '</tr></table>';
+        $output = '<table><tr><td rowspan="' . $nGenP2 . '" class="' . $color . '">' . $dog->name . '</td>' . $this->buildOutput($nGens, $this->GetParentsArray($dog)) . '</tr></table>';
         return view('dog.pedigree.show', compact('output'));
     }
 
@@ -51,16 +48,16 @@ class PedigreeController extends Controller
         $this->iterations++;
 
 
-
         foreach ($parents as $dog) {
 
 
             if ($nGen > 0) {
-                $color = $dog->sex == 'female' ? 'table-light text-dark' : 'table-primary text-dark';
-                if($dog->sex == null) $color = 'table-danger text-dark';
+                $color = ($dog->sex === 'female') ? 'table-light text-dark' :
+                    (($dog->sex === 'male') ?  'table-primary text-dark' : 'table-danger text-dark');
+
                 $dogname = $dog->name ?? 'N/a';
                 $string .= (
-                    '<td rowspan="'. $nGenP2. '" class="'.$color.'"><p>'. $dogname . '</p>' .
+                    '<td rowspan="' . $nGenP2 . '" class="' . $color . '"><p>' . $dogname . '</p>' .
                     //"<p>{$dog->color}</p>" .
 
                     '</td>');
@@ -78,8 +75,9 @@ class PedigreeController extends Controller
     }
 
 
-    protected function GetParentsArray($dog) {
-        $parents =  [
+    protected function GetParentsArray($dog)
+    {
+        $parents = [
             $dog->father() ?? new Dog(),
             $dog->mother() ?? new Dog()
         ];

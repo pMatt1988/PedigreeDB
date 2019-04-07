@@ -222,6 +222,20 @@ class DogController extends Controller
 
     }
 
+    private function deleteImageUrl($dog, $deleteImageOnDisk = false) {
+        //mytodo: implement deleteImageUrl
+        if($dog->image_url === null) return;
+
+        if($deleteImageOnDisk) {
+            $this->deleteImage($dog->image_url);
+        }
+
+        $dog->image_url = null;
+        $dog->save();
+
+
+    }
+
     private function deleteImage($filename, $deleteThumbnail = true)
     {
         if ($filename != null) {

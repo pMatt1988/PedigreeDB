@@ -66,6 +66,9 @@ class Dog extends Model
         'markings',
         'image_url',
         'thumbnail_url',
+        'website',
+        'breeder',
+        'owner',
     ];
 
     public function getDates()
