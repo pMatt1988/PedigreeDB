@@ -6,6 +6,7 @@ use App\Dog;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class DogController extends Controller
@@ -187,9 +188,18 @@ class DogController extends Controller
 
     private function handleImage(Dog $dog)
     {
+
+        //mytodo: Add Thumbnails
         if (request()->hasFile('image')) {
+            if ($dog->image_url != null) {
+
+                $file = '/public/pedigree-img/' . $dog->id . '/' . basename($dog->image_url);
+                if (Storage::exists($file))
+                    Storage::delete($file);
+            }
+
             $path = request()->file('image')->store('/public/pedigree-img/' . $dog->id);
-            $path = '/storage/pedigree-img/'. $dog->id . '/' . basename($path);
+            $path = '/storage/pedigree-img/' . $dog->id . '/' . basename($path);
             $dog->image_url = $path;
             $dog->save();
         }
