@@ -6,6 +6,7 @@ use App\Dog;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class DogController extends Controller
 {
@@ -50,6 +51,8 @@ class DogController extends Controller
             'reg' => ['nullable', 'max:64'],
             'color' => ['nullable', 'max:64'],
             'markings' => ['nullable', 'max:64'],
+            'image' => ['nullable', Rule::dimensions()->maxWidth(900)->maxHeight(900)],
+            'image_url' => ['nullable', 'url'],
         ]);
         $validated['user_id'] = Auth::id();
         $dog = Dog::create($validated);
