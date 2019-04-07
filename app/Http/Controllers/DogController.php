@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Dog;
 use Auth;
 use DB;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Image;
 
 class DogController extends Controller
 {
@@ -144,7 +146,15 @@ class DogController extends Controller
          */
         $this->setUpDogRelationships($dog, ['sire', 'dam']);
 
-        $this->handleImage($dog);
+        $imagePath = $this->handleImage(request()->file('image'));
+        $fileName = basename($imagePath);
+        $this->makeThumbnail(request()->file('image'),  $fileName);
+
+
+        $this->deleteImage($dog->image_url);
+
+        $dog->image_url = $fileName;
+        $dog->save();
 
         return redirect('dogs/' . $id);
 
@@ -186,22 +196,49 @@ class DogController extends Controller
         }
     }
 
-    private function handleImage(Dog $dog)
+    private function handleImage($image)
     {
 
-        //mytodo: Add Thumbnails
-        if (request()->hasFile('image')) {
-            if ($dog->image_url != null) {
+        $path = config('dog.image-directory');
+        $filePath = $image->store($path, 'public');
 
-                $file = '/public/pedigree-img/' . $dog->id . '/' . basename($dog->image_url);
-                if (Storage::exists($file))
-                    Storage::delete($file);
+        return $filePath;
+
+
+    }
+
+    private function makeThumbnail($image, $fileName, $width = 75)
+    {
+        $path = config('dog.thumbnail-directory');
+
+        $filePath = $image->storeAs($path, $fileName, 'public');
+        $filePath = Storage::disk('public')->path($filePath);
+
+        $thumbnail = Image::make($filePath)->resize($width, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+
+        $thumbnail->save($filePath);
+
+
+    }
+
+    private function deleteImage($filename, $deleteThumbnail = true)
+    {
+        if ($filename != null) {
+            $path = config('dog.image-directory') . '/';
+
+
+            if (Storage::disk('public')->exists($path . $filename)) {
+                Storage::disk('public')->delete($path . $filename);
             }
-
-            $path = request()->file('image')->store('/public/pedigree-img/' . $dog->id);
-            $path = '/storage/pedigree-img/' . $dog->id . '/' . basename($path);
-            $dog->image_url = $path;
-            $dog->save();
+            if ($deleteThumbnail) {
+                $thumbnailPath = config('dog.thumbnail-directory') . '/';
+                if (Storage::disk('public')->exists($thumbnailPath . $filename)) {
+                    Storage::disk('public')->delete($thumbnailPath . $filename);
+                }
+            }
         }
+
     }
 }

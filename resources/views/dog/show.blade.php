@@ -13,7 +13,8 @@
                     <div class="row">
                         <div class="col-3">
                             @if($dog->image_url != null)
-                                <img src="{{$dog->image_url}}" alt="blah" class="img-fluid">
+                                <img src="{{'/storage/pedigree-img/' . $dog->image_url}}" alt="blah" class="img-fluid">
+                                <img src="{{'/storage/pedigree-img/thumbnails/' . $dog->image_url}}" alt="blah" class="img-fluid">
                             @endif
                         </div>
                         <div class="col">
