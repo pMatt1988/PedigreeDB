@@ -10,7 +10,7 @@
                     <strong>Add a dog to the database.</strong>
                 </div><!--card-header-->
                 <div class="card-body">
-                    @include('dog.form')
+                    @include('dog.masterform')
                 </div><!--card-body-->
             </div><!--card-->
 

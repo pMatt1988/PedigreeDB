@@ -53,7 +53,7 @@
                                     <div class="col-2 text-right">Dob:</div>
 
                                     <div class="col">
-                                        {{$dog->dob->format('Y-m-d')}}
+                                        {{$dog->getDate()}}
                                     </div>
                                 </div>
                             @endif
@@ -64,7 +64,7 @@
             </div><!--card-->
             <br>
 
-            @if(Auth::user()->can('delete dogs'))
+            @if(Auth::check() && Auth::user()->can('delete dogs'))
 
                 <form method="POST" action="/dogs/{{ $dog->id }}">
                     @csrf

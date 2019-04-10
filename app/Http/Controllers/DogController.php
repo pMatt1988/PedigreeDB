@@ -13,6 +13,9 @@ use Image;
 
 class DogController extends Controller
 {
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -33,7 +36,9 @@ class DogController extends Controller
     {
         //
 
-        return view('dog.create');
+        $method = 'POST';
+        $dog = new Dog();
+        return view('dog.create', compact('method', 'dog'));
     }
 
     /**
@@ -44,21 +49,10 @@ class DogController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'unique:dogs,name'],
-            'sex' => ['required', 'in:male,female'],
-            'dob' => ['nullable', 'date_format:Y-m-d'],
-            'pretitle' => ['nullable', 'max:32'],
-            'posttitle' => ['nullable', 'max:32'],
-            'reg' => ['nullable', 'max:64'],
-            'color' => ['nullable', 'max:64'],
-            'markings' => ['nullable', 'max:64'],
-            'image' => ['nullable', 'image', Rule::dimensions()->maxWidth(900)->maxHeight(900)],
-
-        ]);
+        $validated = $request->validate($this->validationRules());
         $validated['user_id'] = Auth::id();
 
-        $dog = Dog::create($validated);
+        $dog = Dog::updateOrInsert($validated);
 
         //Refresh dog model to make sure our info is up to date!
         $dog->refresh();
@@ -71,11 +65,11 @@ class DogController extends Controller
         /*
          * Handle image uploads
          */
-
         if (request()->hasFile('image')) {
-            $path = request()->file('image')->store('pedigree/' . $dog->id);
-            $dog->image_url = $path;
-            $dog->save();
+            $imagePath = $this->handleImage(request()->file('image'));
+            $fileName = basename($imagePath);
+            $this->makeThumbnail(request()->file('image'), $fileName);
+
         }
 
         return redirect('dogs');
@@ -105,8 +99,9 @@ class DogController extends Controller
     {
         //
         $dog = Dog::with('parents')->find($id);
+        $method = 'PATCH';
 
-        return view('dog.edit', compact('dog'));
+        return view('dog.edit', compact('dog', 'method'));
     }
 
     /**
@@ -120,20 +115,7 @@ class DogController extends Controller
     {
         //
         $dog = Dog::findOrFail($id);
-        $validated = request()->validate([
-            'name' => ['required'],
-            'sire' => ['nullable', 'exists:dogs,name'],
-            'dam' => ['nullable', 'exists:dogs,name'],
-            'sex' => ['required', 'in:male,female'],
-            'dob' => ['nullable', 'date_format:Y-m-d'],
-            'pretitle' => ['nullable', 'max:32'],
-            'posttitle' => ['nullable', 'max:32'],
-            'reg' => ['nullable', 'max:64'],
-            'color' => ['nullable', 'max:64'],
-            'markings' => ['nullable', 'max:64'],
-            'image' => ['nullable', 'image', Rule::dimensions()->maxWidth(480)->maxHeight(480)],
-
-        ]);
+        $validated = request()->validate($this->validationRules());
 
         $dog->update($validated);
 
@@ -145,15 +127,17 @@ class DogController extends Controller
          */
         $this->setUpDogRelationships($dog, ['sire', 'dam']);
 
-        $imagePath = $this->handleImage(request()->file('image'));
-        $fileName = basename($imagePath);
-        $this->makeThumbnail(request()->file('image'),  $fileName);
 
+        if (request()->hasFile('image')) {
+            $imagePath = $this->handleImage(request()->file('image'));
+            $fileName = basename($imagePath);
+            $this->makeThumbnail(request()->file('image'), $fileName);
 
-        $this->deleteImage($dog->image_url);
+            $this->deleteImage($dog->image_url);
+            $dog->image_url = $fileName;
+            $dog->save();
+        }
 
-        $dog->image_url = $fileName;
-        $dog->save();
 
         return redirect('dogs/' . $id);
 
@@ -222,11 +206,12 @@ class DogController extends Controller
 
     }
 
-    private function deleteImageUrl($dog, $deleteImageOnDisk = false) {
+    private function deleteImageUrl($dog, $deleteImageOnDisk = false)
+    {
         //mytodo: implement deleteImageUrl
-        if($dog->image_url === null) return;
+        if ($dog->image_url === null) return;
 
-        if($deleteImageOnDisk) {
+        if ($deleteImageOnDisk) {
             $this->deleteImage($dog->image_url);
         }
 
@@ -253,5 +238,25 @@ class DogController extends Controller
             }
         }
 
+    }
+
+    private function validationRules()
+    {
+        return [
+            'name' => ['required'],
+            'sire' => ['nullable', 'exists:dogs,name'],
+            'dam' => ['nullable', 'exists:dogs,name'],
+            'sex' => ['required', 'in:male,female'],
+            'dob' => ['nullable', 'date_format:Y-m-d'],
+            'pretitle' => ['nullable', 'max:32'],
+            'posttitle' => ['nullable', 'max:32'],
+            'reg' => ['nullable', 'max:64'],
+            'color' => ['nullable', 'max:64'],
+            'markings' => ['nullable', 'max:64'],
+            'image' => ['nullable', 'image', Rule::dimensions()->maxWidth(480)->maxHeight(480)],
+            'breeder' => ['nullable', 'max:32'],
+            'owner' => ['nullable', 'max:32'],
+            'website' => ['nullable', 'url'],
+        ];
     }
 }

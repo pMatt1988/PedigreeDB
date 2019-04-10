@@ -4,6 +4,7 @@ namespace App;
 
 use Awobaz\Compoships\Database\Eloquent\Model;
 use Eloquent;
+use Illuminate\Support\Carbon;
 
 
 /**
@@ -71,9 +72,18 @@ class Dog extends Model
         'owner',
     ];
 
-    public function getDates()
-    {
-        return ['dob'];
+    protected $dates = [
+        'dob'
+    ];
+
+
+
+    public function getDate() {
+        return $this->dob->format('Y-m-d');
+    }
+
+    public function getDBDate() {
+
     }
 
     public function mother()

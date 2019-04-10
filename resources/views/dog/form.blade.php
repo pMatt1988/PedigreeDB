@@ -83,7 +83,6 @@
 
 <div class="form-group row">
     <div class="offset-4 col-8">
-        {{--{{ html()->button('Submit', 'submit', 'submit')->class('btn btn-primary') }}--}}
         <button name="submit" type="submit" class="btn btn-primary">Submit</button>
     </div>
 </div>

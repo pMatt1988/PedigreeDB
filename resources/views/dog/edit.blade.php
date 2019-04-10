@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="card-header">Edit "{{ $dog->name }}"</div>
                 <div class="card-body">
-                    @include('dog.editform')
+                    @include('dog.masterform')
                 </div><!--card-body-->
             </div><!--card-->
         </div><!--col-->
