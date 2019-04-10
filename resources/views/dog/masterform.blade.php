@@ -12,7 +12,6 @@
     </div>
 </div>
 
-
 {{-- Sire --}}
 <div class="form-group row">
     <label for="sire" class="col-4 col-form-label">Sire</label>
@@ -82,6 +81,7 @@
                value="{{ old('pretitle', $dog->pretitle) }}">
     </div>
 </div>
+
 
 
 {{-- Post Title --}}
