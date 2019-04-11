@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Awobaz\Compoships\Database\Eloquent\Model;
 use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
 

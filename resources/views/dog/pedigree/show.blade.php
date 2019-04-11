@@ -10,11 +10,23 @@
         }
 
         td {
-            padding:0px;
+            padding:8px;
             text-align: center;
             border: 1px solid;
             background-color: purple;
             color: silver;
+        }
+        td:hover {
+            background-color: silver !important;
+        }
+        td a {
+            display: block;
+            height: 100%;
+            width: 100%;
+            color: black;
+        }
+        td a:hover {
+            text-decoration: none;
         }
     </style>
 @endpush

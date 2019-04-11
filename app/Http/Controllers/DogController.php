@@ -52,7 +52,7 @@ class DogController extends Controller
         $validated = $request->validate($this->validationRules());
         $validated['user_id'] = Auth::id();
 
-        $dog = Dog::updateOrInsert($validated);
+        $dog = Dog::create($validated);
 
         //Refresh dog model to make sure our info is up to date!
         $dog->refresh();
@@ -244,8 +244,6 @@ class DogController extends Controller
     {
         return [
             'name' => ['required'],
-            'sire' => ['nullable', 'exists:dogs,name'],
-            'dam' => ['nullable', 'exists:dogs,name'],
             'sex' => ['required', 'in:male,female'],
             'dob' => ['nullable', 'date_format:Y-m-d'],
             'pretitle' => ['nullable', 'max:32'],

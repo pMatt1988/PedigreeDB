@@ -24,7 +24,9 @@ class PedigreeController extends Controller
             $nest[] = 'parents';
         }
         $nestString = implode('.', $nest);
-        $dog = Dog::with($nestString)->findOrFail($id);
+        $dog = Dog::with([$nestString => function ($query) {
+            $query->select('id', 'name', 'image_url', 'dob');
+        }])->findOrFail($id);
 
 
         $nGenP2 = pow(2, $nGens);
@@ -53,14 +55,24 @@ class PedigreeController extends Controller
 
             if ($nGen > 0) {
                 $color = ($dog->sex === 'female') ? 'table-light text-dark' :
-                    (($dog->sex === 'male') ?  'table-primary text-dark' : 'table-danger text-dark');
+                    (($dog->sex === 'male') ? 'table-primary text-dark' : 'table-danger text-dark');
 
-                $dogname = $dog->name ?? 'N/a';
+                $pretitle = $dog->pretitle !== null ? '<span class="text-primary">'. $dog->pretitle .'</span> <br>' : null;
+                $dogname = $dog->name !== null ? $dog->name . '<br>' : 'N/a';
+                $posttitle = $dog->posttitle !== null ? '<span class="text-danger">'. $dog->posttitle .'</span> <br>' : null;
+                $image = $dog->image_url !== null ? '<div><img src="/storage/pedigree-img/thumbnails/'
+                    . $dog->image_url . '" alt="Dog Thumb"></div>' : null;
+                $date = $dog->dob !== null ? $dog->dob->format('Y') : null;
+
+
                 $string .= (
-                    '<td rowspan="' . $nGenP2 . '" class="' . $color . '"><p>' . $dogname . '</p>' .
-                    //"<p>{$dog->color}</p>" .
-
-                    '</td>');
+                    '<td rowspan="' . $nGenP2 . '" class="' . $color . '"> <a href="/dogs/' . $dog->id . '"><div>'
+                    . $pretitle
+                    . $dogname
+                    . $posttitle
+                    . $image
+                    . $date
+                    . '</div></a></td>');
                 $string .= $this->buildOutput($nGen, $this->GetParentsArray($dog));
 
             }
