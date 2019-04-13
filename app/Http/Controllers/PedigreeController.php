@@ -33,8 +33,16 @@ class PedigreeController extends Controller
 
         $color = $dog->sex === 'female' ? 'table-light text-dark' : 'table-primary text-dark';
 
+        $pretitle = $dog->pretitle !== null ? '<span class="text-primary">'. $dog->pretitle .'</span> <br>' : null;
+        $dogname = $dog->name !== null ? $dog->name . '<br>' : 'N/a';
+        $posttitle = $dog->posttitle !== null ? '<span class="text-danger">'. $dog->posttitle .'</span> <br>' : null;
+        $image = $dog->image_url !== null ? '<div><img src="/storage/pedigree-img/thumbnails/'
+            . $dog->image_url . '" alt="Dog Thumb"></div>' : null;
+        $date = $dog->dob !== null ? $dog->dob->format('Y') : null;
+
+
         //$output = null;
-        $output = '<table><tr><td rowspan="' . $nGenP2 . '" class="' . $color . '">' . $dog->name . '</td>' . $this->buildOutput($nGens, $this->GetParentsArray($dog)) . '</tr></table>';
+        $output = '<table><tr><td rowspan="' . $nGenP2 . '" class="' . $color . '">' .$pretitle . $dogname . $posttitle . $image . $date . '</td>' . $this->buildOutput($nGens, $this->GetParentsArray($dog)) . '</tr></table>';
         return view('dog.pedigree.show', compact('output'));
     }
 

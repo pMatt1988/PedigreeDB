@@ -14,7 +14,8 @@
                         <div class="col-3">
                             @if($dog->image_url != null)
                                 <img src="{{'/storage/pedigree-img/' . $dog->image_url}}" alt="blah" class="img-fluid">
-                                <img src="{{'/storage/pedigree-img/thumbnails/' . $dog->image_url}}" alt="blah" class="img-fluid">
+                                <img src="{{'/storage/pedigree-img/thumbnails/' . $dog->image_url}}" alt="blah"
+                                     class="img-fluid">
                             @endif
                         </div>
                         <div class="col">
@@ -53,10 +54,103 @@
                                     <div class="col-2 text-right">Dob:</div>
 
                                     <div class="col">
-                                        {{$dog->getDate()}}
+                                        {{ $dog->dob->format('m/d/Y') }}
                                     </div>
                                 </div>
                             @endif
+
+                            @if($dog->sex)
+                                <div class="row">
+                                    <div class="col-2 text-right">Sex:</div>
+
+                                    <div class="col">
+                                        {{ $dog->sex }}
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if($dog->pretitle)
+                                <div class="row">
+                                    <div class="col-2 text-right">Pre-title:</div>
+
+                                    <div class="col">
+                                        {{ $dog->pretitle }}
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if($dog->posttitle)
+                                <div class="row">
+                                    <div class="col-2 text-right">Post-title:</div>
+
+                                    <div class="col">
+                                        {{ $dog->posttitle }}
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if($dog->reg)
+                                <div class="row">
+                                    <div class="col-2 text-right">Reg #:</div>
+
+                                    <div class="col">
+                                        {{ $dog->reg }}
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if($dog->color)
+                                <div class="row">
+                                    <div class="col-2 text-right">Color: </div>
+
+                                    <div class="col">
+                                        {{ $dog->color }}
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if($dog->markings)
+                                <div class="row">
+                                    <div class="col-2 text-right">Markings: </div>
+
+                                    <div class="col">
+                                        {{ $dog->markings }}
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if($dog->website)
+                                <div class="row">
+                                    <div class="col-2 text-right">Website: </div>
+
+                                    <div class="col">
+                                        {{ $dog->website }}
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if($dog->breeder)
+                                <div class="row">
+                                    <div class="col-2 text-right">Breeder: </div>
+
+                                    <div class="col">
+                                        {{ $dog->breeder }}
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if($dog->owner)
+                                <div class="row">
+                                    <div class="col-2 text-right">Owner: </div>
+
+                                    <div class="col">
+                                        {{ $dog->owner }}
+                                    </div>
+                                </div>
+                            @endif
+
+
+
                         </div>
 
                     </div>
