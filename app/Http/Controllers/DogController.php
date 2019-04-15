@@ -7,6 +7,7 @@ use Auth;
 use DB;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Image;
@@ -14,8 +15,7 @@ use Image;
 class DogController extends Controller
 {
 
-
-
+    //mytodo: Advanced Search
     /**
      * Display a listing of the resource.
      *
@@ -49,6 +49,7 @@ class DogController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate($this->validationRules());
         $validated['user_id'] = Auth::id();
 
@@ -113,7 +114,6 @@ class DogController extends Controller
      */
     public function update($id)
     {
-        //
         $dog = Dog::findOrFail($id);
         $validated = request()->validate($this->validationRules());
 
@@ -175,6 +175,22 @@ class DogController extends Controller
                     [
                         'parent_id' => $parent->id
                     ]);
+            } else {
+
+                if ($relation === 'sire') {
+                    $error = \Illuminate\Validation\ValidationException::withMessages([
+                        'sire' => ['Sire must already exist in the Database'],
+                    ]);
+
+                    throw $error;
+                }
+                if($relation === 'dam') {
+                    $error = \Illuminate\Validation\ValidationException::withMessages([
+                        'dam' => ['Dam must already exist in the Database.'],
+                    ]);
+
+                    throw $error;
+                }
             }
         }
     }
@@ -190,8 +206,13 @@ class DogController extends Controller
 
     }
 
-    private function makeThumbnail($image, $fileName, $width = 75)
+    private function makeThumbnail($image, $fileName, $width = null)
     {
+
+        //If a width isn't defined, use the width stored in Config.
+        if ($width === null)
+            $width = config('dog.image-thumbnail-width');
+
         $path = config('dog.thumbnail-directory');
 
         $filePath = $image->storeAs($path, $fileName, 'public');
@@ -206,7 +227,7 @@ class DogController extends Controller
 
     }
 
-    private function deleteImageUrl($dog, $deleteImageOnDisk = false)
+    private function deleteImageUrl($dog, $deleteImageOnDisk = true)
     {
         //mytodo: implement deleteImageUrl
         if ($dog->image_url === null) return;
@@ -251,7 +272,12 @@ class DogController extends Controller
             'reg' => ['nullable', 'max:64'],
             'color' => ['nullable', 'max:64'],
             'markings' => ['nullable', 'max:64'],
-            'image' => ['nullable', 'image', Rule::dimensions()->maxWidth(480)->maxHeight(480)],
+
+            'image' => ['nullable', 'image',
+                Rule::dimensions()
+                    ->maxWidth(config('dog.image-max-width'))
+                    ->maxHeight(config('dog.image-max-height'))],
+
             'breeder' => ['nullable', 'max:32'],
             'owner' => ['nullable', 'max:32'],
             'website' => ['nullable', 'url'],

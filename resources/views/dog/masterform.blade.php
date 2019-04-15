@@ -11,7 +11,9 @@
         <div class="">
             <input id="image" name="image" type="file" class="form-control-file">
             @if($dog->image_url != null)
-                <img src="{{'/storage/pedigree-img/' . $dog->image_url}}" alt="Dog Image" class="img-fluid p-5">
+                <img src="{{'/storage/pedigree-img/' . $dog->image_url}}" alt="Dog Image" id="image-view" class="img-fluid p-5">
+            @else
+                <img src="" alt="Dog Image" id="image-view" class="img-fluid p-5" hidden>
             @endif
         </div>
     </div>
@@ -50,12 +52,14 @@
             <label class="col-4">Sex</label>
             <div class="col-8">
                 <div class="custom-control custom-radio custom-control-inline">
-                    <input name="sex" id="sexMale" type="radio" class="custom-control-input form-control-sm" value="male"
+                    <input name="sex" id="sexMale" type="radio" class="custom-control-input form-control-sm"
+                           value="male"
                             {{ (old('sex') === 'male' || $dog->sex === 'male' || $dog->sex === null) ? 'checked' : '' }}>
                     <label for="sexMale" class="custom-control-label">Male</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
-                    <input name="sex" id="sexFemale" type="radio" class="custom-control-input form-control-sm" value="female"
+                    <input name="sex" id="sexFemale" type="radio" class="custom-control-input form-control-sm"
+                           value="female"
                             {{ (old('sex') == 'female' || $dog->sex == 'female') ? 'checked' : '' }}>
                     <label for="sexFemale" class="custom-control-label">Female</label>
                 </div>
@@ -75,7 +79,8 @@
         <div class="form-group row">
             <label for="owner" class="col-4 col-form-label">Owner</label>
             <div class="col-8">
-                <input id="owner" name="owner" type="text" class="form-control form-control-sm" value="{{ old('owner', $dog->owner) }}">
+                <input id="owner" name="owner" type="text" class="form-control form-control-sm"
+                       value="{{ old('owner', $dog->owner) }}">
             </div>
         </div>
 
@@ -111,7 +116,8 @@
         <div class="form-group row">
             <label for="reg" class="col-4 col-form-label">Registration Number</label>
             <div class="col-8">
-                <input id="reg" name="reg" type="text" class="form-control form-control-sm" value="{{ old('reg', $dog->reg) }}">
+                <input id="reg" name="reg" type="text" class="form-control form-control-sm"
+                       value="{{ old('reg', $dog->reg) }}">
             </div>
         </div>
 
@@ -119,7 +125,8 @@
         <div class="form-group row">
             <label for="color" class="col-4 col-form-label">Color</label>
             <div class="col-8">
-                <input id="color" name="color" type="text" class="form-control form-control-sm" value="{{ old('color', $dog->color) }}">
+                <input id="color" name="color" type="text" class="form-control form-control-sm"
+                       value="{{ old('color', $dog->color) }}">
             </div>
         </div>
 
@@ -145,11 +152,12 @@
         <div class="form-group row">
             <div class="offset-4 col-8">
                 <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+                <a href="/dogs" class="btn btn-danger">Cancel</a>
             </div>
         </div>
+
+
     </div>
-
-
 
 
 </div>
@@ -185,5 +193,9 @@
                 });
             },
         })
+    </script>
+
+    <script>
+        $('#image').change(); 
     </script>
 @endpush
