@@ -10,8 +10,7 @@
                     <strong>Pedigree</strong>
                 </div><!--card-header-->
                 <div class="card-body">
-                    <form action="/testmate" method="POST" autocomplete="off">
-                        @csrf
+                    <form action="/testmate/show" method="GET" autocomplete="off">
                         <div class="form-group">
                             <label for="sire">Sire: </label>
                             <input type="text" id="sire" name="sire" class="form-control">
@@ -20,6 +19,8 @@
                             <label for="dam">Dam: </label>
                             <input type="text" id="dam" name="dam" class="form-control">
                         </div>
+
+
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>

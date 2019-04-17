@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Dog;
 use App\Pedigree\Pedigree;
 use DB;
+use Illuminate\Http\Request;
 
 class PedigreeController extends Controller
 {
@@ -21,7 +22,11 @@ class PedigreeController extends Controller
         return view('dog.pedigree.show', compact('output'));
     }
 
-    public function showtestmate($sirename, $damname, $nGens) {
+    public function showtestmate(Request $request) {
+        $sirename = $request->get('sire');
+        $damname = $request->get('dam');
+        $nGens = 5;
+
         $pedigree = new Pedigree();
         $output = $pedigree->generateTestmate($sirename, $damname, $nGens);
 
@@ -29,16 +34,6 @@ class PedigreeController extends Controller
         return view('dog.testmate.show', compact('output'));
 
     }
-
-    public function posttestmate() {
-        $sirename = request()->input('sire');
-        $damname = request()->input('dam');
-
-        $nGens = 5;
-
-        return redirect('/testmate/' . $sirename . '/' . $damname . '/' . $nGens);
-    }
-
 
     public function testmate() {
         return view('dog.testmate.search');

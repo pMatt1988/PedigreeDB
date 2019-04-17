@@ -19,5 +19,4 @@ Route::get('autocomplete/{query}/{sex}', 'SearchController@resultsex');
 Route::get('dogs/{id}/pedigree/{nGens}', [PedigreeController::class, 'show']);
 
 Route::get('testmate', [PedigreeController::class, 'testmate']);
-Route::post('testmate', [PedigreeController::class, 'posttestmate']);
-Route::get('testmate/{sirename}/{damname}/{nGens}', [PedigreeController::class, 'showtestmate']);
+Route::get('testmate/show', [PedigreeController::class, 'showtestmate']);
