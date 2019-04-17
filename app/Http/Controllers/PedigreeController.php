@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 class PedigreeController extends Controller
 {
 
+    //mytodo: Create Advanced Search
+
     public function GeneratePedigree()
     {
         return null;

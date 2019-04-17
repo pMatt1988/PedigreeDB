@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdvancedSearchController;
 use App\Http\Controllers\DogController;
 use App\Http\Controllers\PedigreeController;
 
@@ -20,3 +21,6 @@ Route::get('dogs/{id}/pedigree/{nGens}', [PedigreeController::class, 'show']);
 
 Route::get('testmate', [PedigreeController::class, 'testmate']);
 Route::get('testmate/show', [PedigreeController::class, 'showtestmate']);
+
+
+Route::get('search', [AdvancedSearchController::class, 'index']);
