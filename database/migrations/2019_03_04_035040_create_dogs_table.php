@@ -16,7 +16,8 @@ class CreateDogsTable extends Migration
         Schema::create('dogs', function (Blueprint $table) {
             $table->increments('id')->index();
             $table->integer('user_id');
-            $table->string("name", 32);
+            $table->string("name", 50)->unique();
+            $table->string('callname', 32)->nullable();
             $table->string('sex');
             $table->date('dob')->nullable();
             $table->string('pretitle', 32)->nullable();
@@ -24,6 +25,11 @@ class CreateDogsTable extends Migration
             $table->string('reg', 64)->nullable();
             $table->string('color', 64)->nullable();
             $table->string('markings', 64)->nullable();
+            $table->string('image_url')->nullable();
+            $table->string('thumbnail_url')->nullable();
+            $table->string('website')->nullable();
+            $table->string('breeder')->nullable();
+            $table->string('owner')->nullable();
             $table->timestamps();
         });
     }

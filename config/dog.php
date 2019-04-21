@@ -9,4 +9,15 @@ return [
     'image-max-height' => 800,
     'image-thumbnail-width' => 75,
 
+    'form-fields' => [
+        'name' => ['text'],
+        'sire' => ['text'],
+        'dam' => ['text'],
+        'sex' => ['select', ['male', 'female']],
+        'breeder' => ['text'],
+        'owner' => ['text'],
+        'dob' => ['text']
+
+    ],
+
 ];

@@ -12,7 +12,7 @@
                 <div class="card-body">
                     @include('dog.advanced.form')
 
-                    @if(!empty($input))
+                    @if($result !== null)
                         @include('dog.advanced.results')
                     @endif
                 </div><!--card-body-->
