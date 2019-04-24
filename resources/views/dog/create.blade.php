@@ -5,6 +5,7 @@
 @section('content')
     <div class="row">
         <div class="col">
+            {{ Breadcrumbs::render('dogcreate') }}
             <div class="card">
                 <div class="card-header">
                     <strong>Add a dog to the database.</strong>
