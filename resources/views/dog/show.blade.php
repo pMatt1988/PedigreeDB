@@ -158,17 +158,19 @@
             </div><!--card-->
             <br>
 
-            @if(Auth::check() && Auth::user()->can('delete dogs'))
+
 
                 <form method="POST" action="/dogs/{{ $dog->id }}">
                     @csrf
                     @method('DELETE')
                     <a href="/dogs/{{ $dog->id }}/edit" class="btn btn-primary">Edit</a>
+                    <a href="/dogs/{{ $dog->id }}/pedigree/4" class="btn btn-success">Pedigree</a>
                     <button type="submit" class="btn btn-danger">Delete</button>
+
 
                 </form>
 
-            @endif
+
 
         </div><!--col-->
     </div><!--row-->
