@@ -85,6 +85,9 @@ class Dog extends Model
     public function getDBDate() {
 
     }
+    public function getBirthYear() {
+        return $this->dob->format('Y');
+    }
 
     public function mother()
     {

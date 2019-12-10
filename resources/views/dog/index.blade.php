@@ -22,13 +22,13 @@
 
                                 <td><a href="/dogs/{{ $dog->id }}">{{ $dog->name }}</a></td>
                                 @php
-                                    $sire = $dog->father() ?? null;
-                                    $dam = $dog->mother()  ?? null;
+                                    $sire = $dog->father();
+                                    $dam = $dog->mother() ;
                                 @endphp
                                 <td><a href="/dogs/{{ $sire->id ?? '#' }}">{{ $sire->name ?? '' }}</a></td>
                                 <td><a href="/dogs/{{ $dam->id ?? '#' }}">{{ $dam->name ?? ''}}</a></td>
                                 <td>{{ $dog->sex }}</td>
-                                <td>{{ $dog->dob }}</td>
+                                <td>{{ $dog->dob != null ? $dog->getBirthYear() : '' }}</td>
 
                             </tr>
                         @endforeach
