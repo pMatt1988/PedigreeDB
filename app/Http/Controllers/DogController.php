@@ -166,32 +166,39 @@ class DogController extends Controller
 
             $parent = Dog::where('name', '=', $value)->first();
 
-            if ($parent != null) {
-                DB::table('dog_relationship')->updateOrInsert(
-                    [
-                        'dog_id' => $dog->id,
-                        'relation' => $relation
-                    ],
-                    [
-                        'parent_id' => $parent->id
-                    ]);
-            } else {
-
-                if ($relation === 'sire') {
-                    $error = \Illuminate\Validation\ValidationException::withMessages([
-                        'sire' => ['Sire must already exist in the Database'],
-                    ]);
-
-                    throw $error;
-                }
-                if($relation === 'dam') {
-                    $error = \Illuminate\Validation\ValidationException::withMessages([
-                        'dam' => ['Dam must already exist in the Database.'],
-                    ]);
-
-                    throw $error;
-                }
+            if ($parent == null) {
+                $parent = Dog::create([
+                    'name' => $value,
+                    'sex' => $relation == 'sire' ? 'male' : 'female'
+                ]);
             }
+
+            DB::table('dog_relationship')->updateOrInsert(
+                [
+                    'dog_id' => $dog->id,
+                    'relation' => $relation
+                ],
+                [
+                    'parent_id' => $parent->id
+                ]);
+
+//            } else {
+//
+////                if ($relation === 'sire') {
+////                    $error = \Illuminate\Validation\ValidationException::withMessages([
+////                        'sire' => ['Sire must already exist in the Database'],
+////                    ]);
+////
+////                    throw $error;
+////                }
+////                if($relation === 'dam') {
+////                    $error = \Illuminate\Validation\ValidationException::withMessages([
+////                        'dam' => ['Dam must already exist in the Database.'],
+////                    ]);
+////
+////                    throw $error;
+////                }
+//            }
         }
     }
 
