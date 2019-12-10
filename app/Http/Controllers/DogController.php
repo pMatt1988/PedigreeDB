@@ -23,7 +23,7 @@ class DogController extends Controller
      */
     public function index()
     {
-        $dogs = Dog::all();
+        $dogs = Dog::orderBy('name')->paginate(25);
         return view('dog.index', compact('dogs'));
     }
 
